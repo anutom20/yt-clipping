@@ -28,3 +28,4 @@ pids
 # Temp directories
 .tmp/
 .temp/ 
+.vercel
