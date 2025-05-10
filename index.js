@@ -125,14 +125,14 @@ app.get("/api/clip", async (req, res) => {
     const channel = await discordClient.channels.fetch(discordChannelId);
     if (channel && channel.isTextBased()) {
       await channel.send(
-        `<strong>${
+        `**${
           title ?? "No title"
-        }</strong>\n Clipped by <strong>${user}</strong> \n\n${timestampedUrl}`
+        }**\nClipped by **${user}**\n\n${timestampedUrl}`
       );
     }
 
     res.send(
-      `Cipped by <strong>${user}</strong> generated and sent to Discord successfully , with title=${title} and offset=${offset}`
+      `Clipped by **${user}** generated and sent to Discord successfully, with title=${title} and offset=${offset}`
     );
   } catch (error) {
     console.error("Error creating clip:", error.message);
