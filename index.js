@@ -83,12 +83,16 @@ app.get("/", (req, res) => {
 // Route for creating clips via API
 app.get("/api/clip", async (req, res) => {
   try {
-    const { youtubeChannelId, offsetSeconds, title, discordChannelId } =
+    const { youtubeChannelId, offsetSeconds, title, discordChannelId, user } =
       req.query;
     const apiKey = process.env.YOUTUBE_API_KEY;
 
     if (!youtubeChannelId) {
       return res.status(400).json({ error: "youtubeChannelId is required" });
+    }
+
+    if (!user) {
+      return res.status(400).json({ error: "user is required" });
     }
 
     if (!discordChannelId) {
@@ -120,11 +124,15 @@ app.get("/api/clip", async (req, res) => {
     // Send the URL to the Discord channel
     const channel = await discordClient.channels.fetch(discordChannelId);
     if (channel && channel.isTextBased()) {
-      await channel.send(`${title ?? "No title"} \n\n${timestampedUrl}`);
+      await channel.send(
+        `<strong>${
+          title ?? "No title"
+        }</strong>\n Clipped by <strong>${user}</strong> \n\n${timestampedUrl}`
+      );
     }
 
     res.send(
-      `Timestamp generated and sent to Discord successfully , with title=${title} and offset=${offset}`
+      `Cipped by <strong>${user}</strong> generated and sent to Discord successfully , with title=${title} and offset=${offset}`
     );
   } catch (error) {
     console.error("Error creating clip:", error.message);
