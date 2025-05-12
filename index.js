@@ -132,7 +132,7 @@ app.get("/api/clip", async (req, res) => {
     }
 
     res.send(
-      `Clipped by **${user}** generated and sent to Discord successfully, with title=${title} and offset=${offset}`
+      `Clipped by **${user}** generated and sent to Discord successfully`
     );
   } catch (error) {
     console.error("Error creating clip:", error.message);
