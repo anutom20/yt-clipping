@@ -123,17 +123,19 @@ app.get("/api/clip", async (req, res) => {
 
     // Send the URL to the Discord channel
     const channel = await discordClient.channels.fetch(discordChannelId);
+    console.log(channel);
     if (channel && channel.isTextBased()) {
       await channel.send(
         `**${
           title ?? "No title"
         } | **Clipped by **${user}**\n\n<${timestampedUrl}>\n delayed by ${offset} seconds\n\n`
       );
+      res.send(
+        `Clipped by **${user}** generated and sent to Discord successfully`
+      );
+      return;
     }
-
-    res.send(
-      `Clipped by **${user}** generated and sent to Discord successfully`
-    );
+    res.send(`There was a problem generating the clip. Stay patient`);
   } catch (error) {
     console.error("Error creating clip:", error.message);
     res
