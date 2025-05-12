@@ -131,7 +131,7 @@ app.get("/api/clip", async (req, res) => {
         } | **Clipped by **${user}**\n\n<${timestampedUrl}>\n delayed by ${offset} seconds\n\n`
       );
       res.send(
-        `Clipped by **${user}** generated and sent to Discord successfully`
+        `'${title}' clipped by **${user}** generated and sent to Discord successfully`
       );
       return;
     }
