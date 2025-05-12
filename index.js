@@ -127,7 +127,7 @@ app.get("/api/clip", async (req, res) => {
       await channel.send(
         `**${
           title ?? "No title"
-        } | **Clipped by **${user}**\n\n${timestampedUrl}\n delayed by ${offset} seconds\n`
+        } | **Clipped by **${user}**\n\n<${timestampedUrl}>\n delayed by ${offset} seconds\n`
       );
     }
 
