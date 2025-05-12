@@ -72,7 +72,7 @@ const generateTimestampedUrl = (
   const timestampSeconds = Math.max(0, secondsElapsed - offsetSeconds);
 
   // Generate the URL with timestamp
-  return `https://www.youtube.com/watch?v=${videoId}&t=${timestampSeconds}`;
+  return `https://youtu.be/${videoId}?t=${timestampSeconds}`;
 };
 
 // API Routes
@@ -127,7 +127,7 @@ app.get("/api/clip", async (req, res) => {
       await channel.send(
         `**${
           title ?? "No title"
-        } | **Clipped by **${user}**\n\n${timestampedUrl} **|** delay ${offset} seconds\n`
+        } | **Clipped by **${user}**\n\n${timestampedUrl}\n delayed by ${offset} seconds\n`
       );
     }
 
