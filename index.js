@@ -75,6 +75,34 @@ const generateTimestampedUrl = (
   return `https://youtu.be/${videoId}?t=${timestampSeconds}`;
 };
 
+// Helper function to retry fetching the Discord channel up to 3 times
+async function fetchDiscordChannelWithRetry(
+  discordClient,
+  discordChannelId,
+  maxRetries = 3,
+  delayMs = 500
+) {
+  let attempt = 0;
+  let channel = null;
+  while (attempt < maxRetries) {
+    try {
+      channel = await discordClient.channels.fetch(discordChannelId);
+    } catch (err) {
+      // Log error but continue retrying
+      console.warn(
+        `Attempt ${attempt + 1} to fetch Discord channel failed:`,
+        err.message
+      );
+    }
+    if (channel) break;
+    attempt++;
+    if (attempt < maxRetries) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+    }
+  }
+  return channel;
+}
+
 // API Routes
 app.get("/", (req, res) => {
   res.json({ message: "YouTube Clipping Server is running" });
@@ -122,7 +150,10 @@ app.get("/api/clip", async (req, res) => {
     );
 
     // Send the URL to the Discord channel
-    const channel = await discordClient.channels.fetch(discordChannelId);
+    const channel = await fetchDiscordChannelWithRetry(
+      discordClient,
+      discordChannelId
+    );
     console.log(channel);
     if (channel && channel.isTextBased()) {
       await channel.send(
