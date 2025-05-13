@@ -135,7 +135,9 @@ app.get("/api/clip", async (req, res) => {
       );
       return;
     }
-    res.send(`There was a problem generating the clip. Stay patient`);
+    res.send(
+      `There was a problem generating the clip. Sometimes this happens , Please try again`
+    );
   } catch (error) {
     console.error("Error creating clip:", error.message);
     res
