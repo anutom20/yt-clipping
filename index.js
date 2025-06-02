@@ -159,7 +159,7 @@ app.get("/api/clip", async (req, res) => {
       await channel.send(
         `**${
           title ?? "No title"
-        } | **Clipped by **${user}**\n\n<${timestampedUrl}>\n delayed by ${offset} seconds\n\n`
+        } | **Clipped by **${user}**\n\n${timestampedUrl}\n delayed by ${offset} seconds\n\n`
       );
       res.send(
         `'${title}' clipped by **${user}** generated and sent to Discord successfully`
