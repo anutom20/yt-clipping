@@ -1,6 +1,9 @@
 # YouTube Clipping Server
 
-A Node.js server for creating and managing YouTube live stream clips with timestamped links.
+**Live Demo:** [https://yt-clipping.vercel.app/](https://yt-clipping.vercel.app/)
+
+A Node.js server for creating and managing YouTube live stream clips with timestamped links.  
+This server is designed to integrate with **Nightbot**, allowing users to clip live stream moments through chat commands.
 
 ## Features
 
@@ -51,23 +54,17 @@ npm run dev
   - Request Body:
     ```json
     {
-      "channelId": "YOUR_YOUTUBE_CHANNEL_ID",
+      "youtubeChannelId": "YOUR_YOUTUBE_CHANNEL_ID",
+      "discordChannelId"  : "YOUR_DISCORD_CHANNEL_ID",
+      "title" : "TITLE OF THE CLIP",
+      "user" : "NAME OF USER WHO MADE THAT CLIP", 
       "offsetSeconds": 50
     }
     ```
   - Response:
     ```json
     {
-      "message": "Timestamped URL generated successfully",
-      "details": {
-        "videoId": "LIVE_STREAM_VIDEO_ID",
-        "channelId": "YOUR_YOUTUBE_CHANNEL_ID",
-        "videoTitle": "Live Stream Title",
-        "streamStartTime": "2023-04-18T12:34:56Z",
-        "currentTimestamp": 3600,
-        "offsetApplied": 50,
-        "timestampedUrl": "https://www.youtube.com/watch?v=LIVE_STREAM_VIDEO_ID&t=3600"
-      }
+      "message": "Timestamped URL generated successfully and set to discord",
     }
     ```
 
