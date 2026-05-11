@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 const getLatestLiveStreamForChannel = async (channelId, apiKey) => {
   try {
     const response = await axios.get(
-      `https://www.googleapis.com/youtube/v3/search?part=id&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`
+      `https://www.googleapis.com/youtube/v3/search?part=id&channelId=${channelId}&eventType=live&type=video&key=${apiKey}`,
     );
 
     if (!response.data.items || response.data.items.length === 0) {
@@ -42,7 +42,7 @@ const getLatestLiveStreamForChannel = async (channelId, apiKey) => {
 const getLiveStreamDetails = async (videoId, apiKey) => {
   try {
     const response = await axios.get(
-      `https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails,snippet&id=${videoId}&key=${apiKey}`
+      `https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails,snippet&id=${videoId}&key=${apiKey}`,
     );
 
     if (!response.data.items || response.data.items.length === 0) {
@@ -59,7 +59,7 @@ const getLiveStreamDetails = async (videoId, apiKey) => {
 const generateTimestampedUrl = (
   videoId,
   actualStartTime,
-  offsetSeconds = 50
+  offsetSeconds = 50,
 ) => {
   // Parse the actualStartTime from ISO 8601 format
   const streamStartTime = new Date(actualStartTime);
@@ -80,7 +80,7 @@ async function fetchDiscordChannelWithRetry(
   discordClient,
   discordChannelId,
   maxRetries = 3,
-  delayMs = 500
+  delayMs = 500,
 ) {
   let attempt = 0;
   let channel = null;
@@ -91,7 +91,7 @@ async function fetchDiscordChannelWithRetry(
       // Log error but continue retrying
       console.warn(
         `Attempt ${attempt + 1} to fetch Discord channel failed:`,
-        err.message
+        err.message,
       );
     }
     if (channel) break;
@@ -134,7 +134,7 @@ app.get("/api/clip", async (req, res) => {
     // Step 1: Get the latest live stream video ID for the channel
     const videoId = await getLatestLiveStreamForChannel(
       youtubeChannelId,
-      apiKey
+      apiKey,
     );
 
     // Step 2: Get the details of the live stream
@@ -146,28 +146,28 @@ app.get("/api/clip", async (req, res) => {
     const timestampedUrl = generateTimestampedUrl(
       videoId,
       actualStartTime,
-      offset
+      offset,
     );
 
     // Send the URL to the Discord channel
     const channel = await fetchDiscordChannelWithRetry(
       discordClient,
-      discordChannelId
+      discordChannelId,
     );
     console.log(channel);
     if (channel && channel.isTextBased()) {
       await channel.send(
         `**${
           title ?? "No title"
-        } | **Clipped by **${user}**\n\n${timestampedUrl}\n delayed by ${offset} seconds\n\n`
+        } | **Clipped by **${user}**\n\n${timestampedUrl}\n delayed by ${offset} seconds\n\n`,
       );
       res.send(
-        `'${title}' clipped by **${user}** generated and sent to Discord successfully`
+        `'${title}' clipped by **${user}** generated and sent to Discord successfully`,
       );
       return;
     }
     res.send(
-      `There was a problem generating the clip. Sometimes this happens , Please try again after 15-20 seconds`
+      `There was a problem generating the clip. Sometimes this happens , Please try again after 15-20 seconds`,
     );
   } catch (error) {
     console.error("Error creating clip:", error.message);
@@ -176,6 +176,8 @@ app.get("/api/clip", async (req, res) => {
       .json({ error: error.message || "Failed to process request" });
   }
 });
+
+// hey
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
